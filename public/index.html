@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket.io</title>
+  </head>
+  <body>
+    <h1>Socket.io</h1>
+    <!-- <button onclick="createConnection()">Create WS Connection</button> -->
+
+    <input type="text" placeholder="Enter message" id="message" />
+    <button id="sendBtn">Send</button>
+
+    <div id="messages"></div>
+
+    <!-- handled by socket.io from the server side -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      //   const createConnection = () => {
+      //     const socket = io();
+      //   };
+
+      const socket = io();
+      const messageInput = document.querySelector("#message");
+      const sendBtn = document.querySelector("#sendBtn");
+      const allMessages = document.querySelector("#messages");
+
+      socket.on("message", (message) => {
+        const p = document.createElement("p");
+        p.innerText = message;
+        allMessages.appendChild(p);
+      });
+
+      sendBtn.addEventListener("click", (e) => {
+        const message = messageInput.value;
+        console.log(message);
+        socket.emit("user-message", message);
+        // emit is used to send a message to all connected clients
+      });
+    </script>
+  </body>
+</html>
